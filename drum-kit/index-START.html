@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+<!--start write code-->
+<!--
+<script> 元素
+在script中直接写js代码并应用，不用任何框架
+
+一、window浏览器窗口
+1. 方法：
+  .addEventListener监听事件：可以监听键盘事件、鼠标事件等
+    event事件的属性：event.type, event.keyCode [tbc]
+
+二、document.querySelector(`audio[data-key="${e.keyCode}"]`)
+1.document的选择器方法 document.querySelector('targetString')：寻找第一个符合targetString条件的元素，本段中为audio中第一个符合data-key="${e.keyCode}"条件的元素
+2.模板字符串 %{}：把e.keyCode这个变量的值嵌入到字符串里去
+3.keyCode:
+4.类名选择器与属性选择器 .key[data-key=65]：.是类名选择器，[]是属性选择器，此处表示选择class=key且属性符合data-key=65的
+4.1 基于属性选择audio[data-key=65]：选择具有 data-key 属性且值为 "65" 的元素，而不是从audio[]数组中通过index访问元素元素
+
+三、<audio>元素
+1. 属性：currentTime：当前音频播放位置，设置为0则是可以重新播放
+2. 方法：audio.play() 开始播放，audio.pause() 暂停，audio.duration() 获取音频/视频的总时长
+
+四、其他注意事项
+非目标按键则中止func(e)，是目标键则清空时间并播放（确保可以在连续按键时连续播放声音，而不是只播放一次）
+-->
+
+<script>
+  window.addEventListener('keydown',function(e){
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}]"`);
+
+    if(!audio){
+      return;
+    }
+    audio.currentTime=0;
+    audio.play();
+
+  })
+</script>
+
+
+</body>
+</html>
