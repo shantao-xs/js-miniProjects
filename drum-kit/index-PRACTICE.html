@@ -70,7 +70,7 @@
 
 二、document.querySelector(`audio[data-key="${e.keyCode}"]`)
 1.document的选择器方法 document.querySelector('targetString')：寻找第一个符合targetString条件的元素，本段中为audio中第一个符合data-key="${e.keyCode}"条件的元素
-2.模板字符串 %{}：把e.keyCode这个变量的值嵌入到字符串里去
+2.模板字面量 `%{}`：把e.keyCode这个变量的值嵌入到字符串里去，并用反括号``包起来
 3.keyCode:
 4.类名选择器与属性选择器 .key[data-key=65]：.是类名选择器，[]是属性选择器，此处表示选择class=key且属性符合data-key=65的
 4.1 基于属性选择audio[data-key=65]：选择具有 data-key 属性且值为 "65" 的元素，而不是从audio[]数组中通过index访问元素元素
@@ -79,22 +79,49 @@
 1. 属性：currentTime：当前音频播放位置，设置为0则是可以重新播放
 2. 方法：audio.play() 开始播放，audio.pause() 暂停，audio.duration() 获取音频/视频的总时长
 
-四、其他注意事项
-非目标按键则中止func(e)，是目标键则清空时间并播放（确保可以在连续按键时连续播放声音，而不是只播放一次）
+四、KEY FEATURES
+1. sound: 
+1.1 按到目标按键则播放。注意确保能够连续短促地播放
+  how to do: 
+  - 用listener监听key按下的事件，调取每个事件的keyCode属性，用selector找到对应的audio，并执行audio.play()
+  - 通过设置audio.currentTime=0;确保audio可以重复从头开始播放
+1.2 非目标按键则中止function(e)
+
+2. animation:
+当按到目标按键时：
+2.1 可以产生class=playing的效果。注意确保playing只持续0.5s就消失（怎么做？）
+
+五、css属性
+如何实现转瞬即逝的动画效果：给key这个类所在的元素div添加一个属性playing，等过渡结束后(listen 'transitionend')再撤销这个属性
+注意，属性是transitionend，不要拼错！
 -->
 
 <script>
-  window.addEventListener('keydown',function(e){
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`.key[data-key="${e.keyCode}]"`);
+  function removeTransition(e){
+    if (e.propertyName !== 'transform') {
+      return;
+    }
+    e.target.classList.remove('playing');
+  }
 
+  function playSound(e){
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
     if(!audio){
       return;
     }
     audio.currentTime=0;
     audio.play();
 
-  })
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    key.classList.add('playing');
+  };
+
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key=>{
+    key.addEventListener('transitionend',removeTransition); 
+  });
+  window.addEventListener('keydown',playSound);
 </script>
 
 
