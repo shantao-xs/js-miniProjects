@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+
+  <style>
+    html {
+      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform: rotate(90deg); /*transform：旋转，缩放，倾斜，平移    rotate：旋转  90deg：让初始指针从12点开始*/
+      transform-origin: 100%;
+
+      transition: all 0.05s; /*状态变化时的过渡效果 all：对所有状态变化的属性都施加transition效果  0.05s：变化的耗时*/
+      transition-timing-function: cubic-bezier(1,-0.39, 0, 1.11); /*变化的加速曲线，通过dev tools的styles-.hand-transition timing function来调整曲线并获取对应参数*/
+    }
+
+    .second-hand{
+      background: rgb(249, 40, 40);
+    }
+
+
+  </style>
+<!--
+  选择元素：定位到各指针元素的位置（以便之后更改这些元素的css style）
+  updateTime函数：
+    获取当前时间的时分秒，分别计算当前时间在时钟里的度数
+    更新每个指针元素的style的transform的度数，用字面量来写${}
+  重复调用updateTime:通过setInterval令每隔一秒钟都调用一遍updateTime函数(注意：确保最后执行了updateTime)
+-->
+  <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+
+    function updateTime(){
+      const now = new Date();
+      const second = now.getSeconds();
+      const secondDegree = second/60*360+90;
+
+      const min=now.getMinutes();
+      const minDegree = min*60/360+(second/60*6)+90;
+
+      const hour = now.getHours();
+      const hourDegree = hour/12*360+(min/60*30)+90;
+
+      secondHand.style.transform=`rotate(${secondDegree}deg)`;
+      minHand.style.transform=`rotate(${minDegree}deg)`;
+      hourHand.style.transform=`rotate(${hourDegree}deg)`;
+
+    }
+
+    setInterval(updateTime,1000);
+    updateTime();
+  </script>
+</body>
+</html>
