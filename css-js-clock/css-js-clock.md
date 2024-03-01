@@ -10,9 +10,12 @@
 
 ### core points
 1. 元素选择器 document.querySelector
-2. 获取日期及精确到时分秒 new Date(), .getSeconds()
-3. 改变css sytle：模板字符串/`${val}`和 targetElement.style.transform=...
-4. 重复调用函数: setInterval(func, time)
+2. 获取日期及精确到时分秒 `new Date(), .getSeconds()`
+3. 改变css sytle：模板字符串\`${val}`和 targetElement.style.transform=...
+4. 重复调用函数: `setInterval(func, time)`
 5. css样式：
-    5.1 transform 旋转，缩放，倾斜，平移 中的rotate
-    5.2 transition: all 0.05s 表示状态过渡，all：对所有状态变化的属性都施加transition效果，0.05s：变化的耗时，timing-function: cubic-bezier(1,-0.39, 0, 1.11)变化的加速曲线
+    - 5.1 transform 旋转，缩放，倾斜，平移 中的rotate
+    - 5.2 transition:all 0.05s 表示状态的变化过渡
+        - all：对所有状态变化的属性都施加transition效果
+        - 0.05s：变化的耗时 
+        - timing-function: cubic-bezier(1,-0.39, 0, 1.11)变化的加速曲线
