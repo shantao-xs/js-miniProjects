@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flex Panels 💪</title>
+  <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <style>
+    html {
+      box-sizing: border-box;
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-size: 20px;
+      font-weight: 200;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+
+    /*flex container*/
+    .panels {
+      min-height: 100vh;
+      overflow: hidden;
+
+      display: flex;
+    }
+
+    .panel {
+      background: #6B0F9C;
+      box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
+      color: white;
+      text-align: center;
+      
+      /* Safari transitionend event.propertyName === flex */
+      /* Chrome + FF transitionend event.propertyName === flex-grow */
+      transition:
+        font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+        flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+        background 0.2s;
+      font-size: 20px;
+      background-size: cover;
+      background-position: center;
+
+      /*panel作为panels的items时：*/
+      flex:1;
+      /*panel作为container时针对下属的p：*/
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+
+    }
+
+    
+
+    .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
+    .panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
+    .panel3 { background-image:url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d); }
+    .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
+    .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
+
+    /* Flex Children */
+    /**/
+    .panel > * {
+      margin: 0;
+      width: 100%;
+      transition: transform 0.5s;
+      
+      /*panel下的所有元素*都按照flex的逻辑显示
+      并且每个元素在panel container内均匀分布，并且在每个分布居中.确保窗口放大等比例增长，缩小时按比例收缩，并按照窗口大小确定元素大小
+      这里用red border让各个flex item都更直观地显示
+      */
+      display: flex;
+      border: red solid 1px;
+      flex:1 0 auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /*让这些元素默认不出现，通过transorm可以改变
+    translateY：在页面垂直移动元素，使其淡出页面
+    open-active：拥有这个类的元素可以拥有transform属性了
+    */
+    .panel > *:first-child{
+      transform: translateY(-100%);
+    }
+    .panel > *:last-child{
+      transform: translateY(100%);
+    }
+    .panel.open-active >*:first-child{
+      transform: translateY(0%);
+    }
+    .panel.open-active >*:last-child{
+      transform: translateY(0%);
+    }
+
+
+
+    /*flex item's component: 文字*/
+    .panel p {
+      text-transform: uppercase;
+      font-family: 'Amatic SC', cursive;
+      text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
+      font-size: 2em;
+    }
+
+    .panel p:nth-child(2) {
+      font-size: 4em;
+    }
+
+    .panel.open {
+      font-size: 40px;
+      flex:5;
+    }
+
+  </style>
+
+
+  <div class="panels">
+    <div class="panel panel1">
+      <p>Hey</p>
+      <p>Let's</p>
+      <p>Dance</p>
+    </div>
+    <div class="panel panel2">
+      <p>Give</p>
+      <p>Take</p>
+      <p>Receive</p>
+    </div>
+    <div class="panel panel3">
+      <p>Experience</p>
+      <p>It</p>
+      <p>Today</p>
+    </div>
+    <div class="panel panel4">
+      <p>Give</p>
+      <p>All</p>
+      <p>You can</p>
+    </div>
+    <div class="panel panel5">
+      <p>Life</p>
+      <p>In</p>
+      <p>Motion</p>
+    </div>
+  </div>
+
+  <script>
+    const panels = document.querySelectorAll('.panel');
+
+    /*click时，让当前元素切换关于open类的状态：如无则增加open类，反之亦然*/
+    function toggleOpen(){
+      this.classList.toggle('open');
+    }
+
+    /*注意这里需要判断什么时候启动open-active：只有当panel.open里包含flex，即画布拓展时，才启动*/
+    /*todo: 还没处理好浮动文字的位置问题*/
+    function toggleOpenActive(e){
+      if(e.propertyName.includes('flex')){
+        this.classList.toggle('open-active');
+      }
+      
+    }
+
+    /*在click-toggleOpen处理完后，等css transition完成，触发transitionend*/
+    panels.forEach(panel => {
+      panel.addEventListener('click',toggleOpen);
+      panel.addEventListener('transitionend',toggleOpenActive);
+    });
+  </script>
+ 
+
+
+
+</body>
+</html>
