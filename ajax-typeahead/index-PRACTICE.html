@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+
+  <!--怎么从一个.json文件网站中获取具体的json文件中的data集合？
+  为什么需要异步获取？
+  基于prototype原型的Javascript：没有继承方法，所以JavaScript要引用别的方法需要嵌套一层层的原型，直到引用到那个有方法的object，比如要获取.json方法，就需要找到response这个proto
+  怎么把获取的data集合存入一个array？针对const类型的常数，使用.push(...data)的方法来不断增加新数
+
+  注：在console中写入变量如cities，等效于console.log(cities)，同样可以起到检查的效果
+  -->
+  <!--
+1.读取数据
+2.监听键盘输入的字母
+3.根据监听结果（这里需要用到regex正则，全局查找并忽略大小写），【查找】数据中是否存在有“xx“字样的结果，如有则返回有的结果array（country&state都要)
+4.根据返回的结果集合进行【展示】，设置html的格式：遍历数组，一一展示为<li>，并套入class=suggestion的样式里（用.innerHTML()获取html内容）
+    !!!注意：这里需要先遍历，再join，让它成为一组数据而不是一条！
+
+addEventListener返回的是事件obj，而不是具体的array值，要从event中提取值
+
+find()只显示找到的第一个答案
+filter()显示找到的所有答案
+
+正则：需要用new regExp(word,'gi')来生成
+应用正则：string.prototype.match(正则) OR 正则.test(string.prototype)
+
+监听：监听不需要赋值给变量，监听方法本身会返回undefined而不是监听到的事件对象，监听要通过event.target.value来访问监听到的事件对象的值
+event.xxx 和监听事件有关的一些值
+
+误区！
+参数传递还是全局变量？
+如果要在函数findKeyWord里使用cities数组，
+法1：定义cities为全局变量直接引用
+法2：在函数里设置参数cities，并且在调用这个函数的.addEventListener('keyup',findKeyWord)里把findKeyWord这里传入cities数组
+不然会导致cities uncaught
+
+具体怎么写？如果要中途test的，要在console里输入方法来test，这种最好把参数设计好
+
+todo 其他待办：1.给关键词加highlight:用.replace()把正则换成别的样式`<span>${...}</span>`
+todo 2.结果用优先级排序：先展示city匹配，再展示state匹配
+  -->
+
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+const cities = [];
+fetch(endpoint)
+  .then(blob => blob.json())
+  .then(data=>cities.push(...data));
+
+function findKeyWord(inputwords,cities){
+  const regex = new RegExp(inputwords,'gi');
+  const targetCities = cities.filter(each=>{
+    return each.city.match(regex)||each.state.match(regex);
+  });
+  return targetCities;
+}
+
+
+function displayFind(){
+  const result = findKeyWord(this.value,cities);
+  const html =  result.map(each=>{
+    const regex = new RegExp(this.value,'gi');
+    const cityHL = each.city.replace(regex,`<span class="hl">${this.value}</span>`);
+    const stateHL = each.state.replace(regex,`<span class="hl">${this.value}</span>`);
+    return  `
+      <li>
+        <span class="name">${cityHL}, ${stateHL}</span>  
+        <span class="name">${each.population}</span>
+      </li>
+    `;
+  }).join('');
+  suggestions.innerHTML=html;
+}
+
+const suggestions = document.querySelector('.suggestions');
+const searches = document.querySelector('.search');
+searches.addEventListener('keyup',displayFind);
+
+</script>
+</body>
+</html>

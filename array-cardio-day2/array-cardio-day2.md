@@ -7,4 +7,4 @@
 4. `arr.findIndex()` 根据xx条件查找并返回该数据所在的位置（以便后续进行增删等）
 
 ### 2. 待补充，arr的其他修改方法
-切除：splice
+1. 切除：.splice(index,num) 从index开始切除num个数 （不熟练）
