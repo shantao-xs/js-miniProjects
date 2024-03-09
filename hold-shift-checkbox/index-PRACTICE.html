@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hold Shift to Check Multiple Checkboxes</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <style>
+
+    html {
+      font-family: sans-serif;
+      background: #ffc600;
+    }
+
+    .inbox {
+      max-width: 400px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #F1F1F1;
+    }
+
+    .item:last-child {
+      border-bottom: 0;
+    }
+
+    input:checked + p {
+      background: #F9F9F9;
+      text-decoration: line-through;
+    }
+
+    input[type="checkbox"] {
+      margin: 20px;
+    }
+
+    p {
+      margin: 0;
+      padding: 20px;
+      transition: background 0.2s;
+      flex: 1;
+      font-family:'helvetica neue';
+      font-size: 20px;
+      font-weight: 200;
+      border-left: 1px solid #D1E2FF;
+    }
+  </style>
+   <!--
+   The following is a common layout you would see in an email client.
+
+   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
+
+  -->
+  <div class="inbox">
+    <div class="item">
+      <input type="checkbox">
+      <p>This is an inbox layout.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check one item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Hold down your Shift key</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check a lower item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Everything in between should also be set to checked</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Try to do it without any libraries</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Just regular JavaScript</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Good Luck!</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Don't forget to tweet your result!</p>
+    </div>
+  </div>
+
+  <!--
+选中所有的input，遍历他们，监听先点了谁，点了+shift的是谁，然后遍历这两个之间的所有item，增加被勾选的效果
+注意：选中checkbox的时候，需要从.inbox的父类开始选。对于内置的类比如checkbox，留意以下写法
+注意：要遍历checkboxes，它不是一个单独的对象
+  -->
+<script>
+  let prevChecked;
+  const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('click',handleCheck);
+  })
+
+  function handleCheck(e){
+    //当同时按下shift + 该按钮被选中：从头遍历整个checkboxes，找到check开头和结尾的地方，从而找出inbetween的对象数组集合(inbetween=!inbeween，便于切换而不是固定设置true/false)，给他们施加checked的状态(xx.checked=true)
+    let inbetween=false;
+    if(e.shiftKey && this.checked){ //注意，这里的this指向click监听到的checkbox元素，而不是在这里被遍历的checkboxes！
+      checkboxes.forEach(checkbox=>{
+        if(checkbox===this || checkbox === prevChecked){
+          inbetween= !inbetween;
+        }
+        if(inbetween==true){
+          checkbox.checked=true;
+        }
+      });
+    }
+    prevChecked = this; //在遍历checkboxes并且调用handleChecked的时候，每一次遍历的最后都会把本次遍历的对象e记录下来作为prevChecked
+  }
+
+</script>
+</body>
+</html>
