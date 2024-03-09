@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Key Detection</title>
+    <script type="text/javascript" src="./cornify.js"></script>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <script>
+      //监听每一次keyup，把按键存入数组pressed，并把数组控制在固定n个长度（splice删除多余的），将数组组成字符串后（.join(''）和secret比较，若密码正确则触发cornify.js的各种效果
+      const pressedKeys = [];
+      const secret = 'unicorn';
+      document.addEventListener('keyup',handleKeyUp);
+      function handleKeyUp(e){
+        pressedKeys.push(e.key);
+        
+        if(pressedKeys.length>secret.length){
+          pressedKeys.splice(0,pressedKeys.length-secret.length);
+        }
+
+        if(pressedKeys.join('')==secret){
+          cornify_add(); //执行cornify文件的方法
+        }
+        
+        console.log(pressedKeys.join(''));
+      }
+
+    </script>
+  </body>
+</html>
