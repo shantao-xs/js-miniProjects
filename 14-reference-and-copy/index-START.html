@@ -47,9 +47,9 @@
       }
     };
 
-    const person1 = {...person};
+    const person1 = {...person}; //这样只能copy第一层，嵌套的第二层social还是引用了person的
     person1.social.twitter='@new';
-    
+
 
     // and think we make a copy:
 
