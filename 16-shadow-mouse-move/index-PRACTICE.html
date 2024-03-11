@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+
+  <style>
+  html {
+    color: black;
+    font-family: sans-serif;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+  }
+
+  h1 {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    font-size: 100px;
+  }
+  </style>
+
+<script>
+  //两个元素：一个是锚点元素（anchor），一个是随鼠标动的shadow元素（shadow）
+  const anchor = document.querySelector('.hero');
+  const shadow = document.querySelector('.hero h1');
+  const moveRange = 50;
+
+  //让shadow相对于anchor的位置，随着mousemove的幅度而移动
+  // =>解读为：只要shadow和anchor的位置不重叠，计算shadow相对于anchor来说的位置(e.offset+e.target.offsetLeft)，然后计算他们的移动幅度，从而算出shadow的面积
+  //tips:let {offsetX : x, offsetY: y}=e;可以一次性给多个属性命名变量
+  function handleMove(e){
+    let {offsetX : x, offsetY: y}=e;
+    const {offsetWidth: width, offsetHeight:height} = anchor;
+    if(this !== e.target){
+      x = x+e.target.offsetLeft;
+      y=y+e.target.offsetTop;
+    }
+
+    const xMoveRange = Math.round((x / width * moveRange) - (moveRange / 2));
+    const yMoveRange = Math.round((y / height * moveRange) - (moveRange / 2));
+
+    shadow.style.textShadow = `
+      ${xMoveRange}px ${yMoveRange}px 10px rgba(128, 128, 128, 0.7)
+    `;
+  }
+
+  //tips: this vs e: this是被监听的元素/被绑定的元素，即anchor，e.target则是触发了mousemove的元素，即shadow
+  anchor.addEventListener('mousemove', handleMove);
+
+
+</script>
+</body>
+</html>
