@@ -1,51 +1,59 @@
-15 localstorage
+# 15 localstorage
+## 主要功能
+1. 可以新增item，在页面中以列表的方式显示
+2. 可以对item进行checkbox操作
+3. 数据存储：item的文本和check状态都被存入localstorage，以防页面刷新后丢失
+4. 其他：可以进行clearAll, clearChecked等操作
 
-event.preventDefault()防止页面自动刷新
+## 步骤
+针对新增item、新增item的checkbox、增加clearAll等button分别进行：
+1. 选择器选到当前元素：针对数据端选定items所在的元素，针对html端选定itemList所在的元素
+2. 监听click/submit等事件，执行函数，在函数中：
+    - 确定item的数据内容，两个属性：文本和check状态
+    - 更新新的item到items数组（文本更新到items.text，check状态更新到items.done）
+    - 将items数组通过`itemList.innerHTML = ...` 的形式在html端展现（<ul><li>）：`.map().join('')`
+    - 将items数组更新到localStorage，即便刷新页面也不丢失：`localStorage.setItem('items',JSON.stringify(items))`
+3. 增加clearAll和clearChecked功能
+    - 这里需要把items数组改成let变量而不是const常量
+4. 其他细节：
+    - 如果被check，就把图标从复选框转换成一个emoji（用css样式.checked来实现，注意写input-checked实现的逻辑）
+    - 更新checkbox的状态需要注意两点：①怎么找到目标checkbox ②2.怎么只找checkbox而不找其他元素 ③怎么切换checkbox状态
+        1. 怎么找到目标checkbox：新建一个属性data-index来储存唯一标识定位它
+        2. 怎么切换checkbox状态：不是直接赋值=false/true，而是通过= !input.done来随意toggle
+    - 
 
-知识点：input元素如何选中输入的文本内容querySelector('[name=targetInputBox]').value
+## 知识点
+### 1.JS
+1. localStroage
+    - 打开devTool的application可查看
+    - `.setItem(key,value)` 写入localStorage，键值对储存，
+    - `.getItem(key)` 读取localStorage
+    - removeItem()
+    - localStorage的读写数据类型：注意value必须是字符串形式，故存写时需要通过`JSON.stringify()`转为string，读取时需要用JSON.parse()转为object
+2. submit元素`input type="submit"`相关
+    - 在处理input type="submit"时，使用this.reset()来清空输入框
+    - 在处理input type="submit"时，用event.preventDefault()阻止submit键默认提交的行为，以免页面被主动刷新（但是还是可以继续执行handleAdd操作并且更新dish list的
+3. querySelector选择器
+    - 一般通过class定位元素，比如document.querySelector('.my-class');
+    - 怎么定位指定的input元素？用name来定位，比如document.querySelector('[name=targetName]')
+    - 怎么获取用户input的数据？通过document.querySelector('[name=targetName]').value来获得用户输入的值
 
-功能；
-输入文本框可以新增的菜单里
-然后文本框被清空
-在菜单里，每条数据都需要一个checkbox和具体的文本，如果被check，就把图标从复选框转换成一个emoji
-数据存储在local，刷新页面也仍然不丢失
-步骤：
-1.监听submit，把监听的数据存到local storage
-2.监听check，把check的装填存到local
-其中的问题：怎么存？local需要什么样的datatype？怎么读取local的数据？
-3. 把submit和check的结果应用到html页面上：ul和li的呈现，配合已经设置好的css样式
+### 2.HTML
+1. form元素
+form主要用来做什么？处理用户input的数据，常用的表单元素包括label, input-text, input-submit, input-checkbox等
 
-
-步骤：
-1.监听到提交submit后，提取input框里的值，2.储存数据（注意要标记flag done:flase），并存入数据集
-监听到checkbox被click后，也储存数据到localstorage
-3.清空input：  this.reset()
-4. html化：将数据集在页面中展示出来
-4.1 展示：xx.innerHTML = ...
-4.2 遍历数据集里的每条数据.map()最后再组合起来.join('')，每一条数据作为<ul>中的<li>展示
-4.2.1 为了让checkbox的图标可以在复选框和emoji之间转换，需要判断是否要在input中引入checked这个属性（通过创建这条数据的时候给数据增加一个属性done:false来判定）
-5. 在localstorage中存取、读写数据，与创建的数据集items交互
-- 存入localstorage：.setItems()，注意，存储只能存字符串，所以要用JSON.stringify()来把object转换成字符串
-- 读取localstorage并转为object：JSON.parse(localStorage.getItem('items))
-6. 在localstorage中储存checkbox的状态
-6.1 点击checkbox时，把checkbox的状态也记录下来
-难点1：定位到的是input元素吗？还是它的父元素>
-难点2：怎么保证这个input元素能够被识别？——新建一个属性data-index来储存唯一标识
-难点3：怎么记录状态？用一个逻辑值来toggle，使checked的状态可以来回切换
-其他和5同理，也是stringify后存入sotrage（.setItem)
-注意ul和li的关系，ul父列表里应该
+### 3.CSS
+1. flexbox的应用？
+2. :before伪类的应用？
 
 
+## 易错点
+//??? 怎么读取input里的用户输入数据？不能直接选择e.target.value，那样只会返回父元素<form class="add-items">这个对象，应该要选择input[name="item"]的子元素，并读取它的值.value
+//!!! 从localstorage中存取的时候，不要忘记转化JSON object or string！
 
-7. *增加功能，clearAll button，清空localstorage
-这里需要把items数组改成let变量而不是const常量
+//??? 怎么才能够用html显示出来？必须要把这个显示的return赋值给目标元素（.plates)的innerHTML属性！
+//??? 怎么写唯一标识符？用id不能直接写index等数字，可以自定义如data-index, data-xxx... ，这样可以反复使用数字${i}
+//!!! label的for必须要跟input的id对应上！如果不关联，则无法点击切换checkbox状态
 
-
-localstorage有什么用？
-本地储存数据，即便刷新也仍然保存
-在dev tools-application-storage-local storage中可以查询存储的数据
-
-localstorage的方法：
-setItem('arrays',JSON.stringify(newItem)})
-getItem()
-removeItem()
+//这里只需要修改对应checkbox的done状态（1.怎么找到对应的box？ 2.怎么只找checkbox而不找其他元素？ 3.怎么toggle该checkbox的状态？）
+//!!! 不要忘记，只对input元素进行排查，排除其他元素！

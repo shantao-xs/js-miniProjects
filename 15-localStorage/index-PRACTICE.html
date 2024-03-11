@@ -36,6 +36,7 @@
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
   let items = JSON.parse(localStorage.getItem('items')) || []; //注意！items不能是常量！
+  
 
   //监听输入框的部分，将输入内容存入数组（全局变量），1.展示在html页面 2.存入localstorage
   addItems.addEventListener('submit',handleAdd);
@@ -44,7 +45,7 @@
     event.preventDefault();//阻止默认刷新
     const inputText = document.querySelector('[name="item"]').value; //1. 选择具有'[name="item"]'的所有元素，不仅仅是具有'[name="item"]'的input元素 2.如果只是选择元素，那返回的是object，这里需要的是object.value属性
     const newItem = {
-      inputText,
+      text:inputText,
       done: false
     };
     items.push(newItem);
@@ -62,7 +63,7 @@
       return `
         <li>
           <input type="checkbox" id="item${i}" data-index=${i} ${item.done==true? 'checked' : ''}/>
-          <label for="item${i}">${item.inputText}</label>
+          <label for="item${i}">${item.text}</label>
         </li>
       `}).join('');
   }
