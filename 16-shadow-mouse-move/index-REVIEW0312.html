@@ -36,6 +36,41 @@
   </style>
 
 <script>
+  //三组数据：anchor节点的位置，shadow节点的相对位置，mousemove产生的偏移量
+  //给出固定公式：Math.round((x / width * moveRange) - (moveRange / 2))
+  const anchor = document.querySelector('.hero');
+  const shadow = document.querySelector('.hero h1');
+  const moveRange = 50;
+  //？？？怎么才能在devtool里看到anchor的不同属性？  console.dir(anchor);打印属性列表
+
+  //怎么批量给一个对象的多个属性赋值？{x:x,y:y}=event
+  function handleMove(e){
+    //anchor节点的宽高
+    const {offsetWidth:width, offsetHeight:height} = anchor;
+    //mousemove偏移量
+    let {offsetX:x,offsetY:y} = e;
+
+    //！！！当anchor(this)与鼠标位置(e.target)不重叠时，再计算相对于anchor父节点的left和top偏移的量，即mousemove运动偏移量+当前节点相对于父节点left和top的偏移量
+    if(this !== e.target){
+      x=x+e.target.offsetLeft;
+      y=y+e.target.offsetTop;
+    }
+
+
+
+    //套用公式 Math.round((x / width * moveRange) - (moveRange / 2))
+    const xMoveRange = Math.round((x / width * moveRange) - (moveRange / 2));
+    const yMoveRange = Math.round((y / height * moveRange) - (moveRange / 2))
+
+    //!!!错误原因：检查有没有缺了一半的{}！
+    shadow.style.textShadow = `${xMoveRange}px ${yMoveRange}px 10px rgba(128, 128, 128, 0.7)`;
+  }
+
+  
+  
+  anchor.addEventListener('mousemove',handleMove);
+  
+
 </script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 # array相关知识 sort
 ## 功能/要求
-排除所有包含a，an，the的单词后，对bandname进行升序排序，并以列表的形式在页面上显示出来
+1. 排除所有包含a，an，the的单词后，对bandname进行升序排序
+2. 以列表的形式在页面上显示出来
 
 组合使用sort和其他筛选array的函数
 
@@ -32,3 +33,7 @@ replace(regex,'')
 (a |an )a后带空格或者an后带空格的
 
 ## 展开：把前5个band的icon换成吉他，其他换成架子鼓
+
+## 易错点
+1. innerHTML进行html展现的时候，不要忘记join！如果没有会默认用,连接各个元素，形成一个字符串，用join则可以不用分隔符、从而得到正确的HTML格式
+2. splice和replace:splice是array的方法，replace是string的方法

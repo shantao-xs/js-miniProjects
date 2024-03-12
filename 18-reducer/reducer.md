@@ -23,10 +23,14 @@
 如累计求和：`.reduce((sum,cur)=> sum+=cur)`
 
 ## 易错点
-1. 时刻留心数据类型！
+1. 时刻记得查看当前变量属于什么数据类型！
+如何查看：console.log(typeof(thisdata))
 .split会产生string
 原始数据选择后产生的是nodelist
 一定要留意他们是不是number！
+2. arrow function里不要忘记return！！！
+3. 注意字符串转换时如何批量转换：.map(parseFloat)
+
 
 ## tips
 1. devtool小知识

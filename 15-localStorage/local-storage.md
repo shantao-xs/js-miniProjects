@@ -57,3 +57,8 @@ form主要用来做什么？处理用户input的数据，常用的表单元素�
 
 //这里只需要修改对应checkbox的done状态（1.怎么找到对应的box？ 2.怎么只找checkbox而不找其他元素？ 3.怎么toggle该checkbox的状态？）
 //!!! 不要忘记，只对input元素进行排查，排除其他元素！
+
+//易错：用handleClick是存储toggle checkbox的状态，用display里的 ${item.done?'checked':''}则是配置这个状态下应该如何展示
+//怎么找到input type=submit里用户输入的文本值？【错了两遍！】先定位到该子元素input[name='item']，再去读取它的.value
+//怎么找到目标checkbox的对应的label再items中的文本？【错了两遍！】用到data-index这个属性定位它在items数组中的位置
+//怎么检查当前元素是不是input元素？ e.target.matches('input')
