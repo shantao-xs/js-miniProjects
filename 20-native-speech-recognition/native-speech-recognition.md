@@ -1,9 +1,10 @@
 # native speech recognition（web API相关）
 
 ## 功能
-用户说话时（英文）可以自动识别文字并显示
-停止说话会自动换行
-碰到关键词（如weather）会触发特殊效果
+1. 用户说话时（英文）可以自动识别文字并显示
+2. 停止说话会自动换行
+3. 碰到关键词（如weather）会触发特殊效果
+4. 拓展：让识别关键词hoop up to某个链接/图片/api
 
 ## 步骤
 
@@ -11,11 +12,9 @@
 ## 知识点
 ### 1. web api
 web api可以是浏览器内置（如speechrecognition)，也可以是第三方api（如google maps api)
-
 怎么读api的文档？
 
 ### 2. JS
-
 1. DOM相关：getElementById和querySelector的区别？
     - getElementById：精准定位唯一id
     - querySelector：可以批量选择"#id"、".class"、\"[attribute]"
@@ -24,7 +23,7 @@ web api可以是浏览器内置（如speechrecognition)，也可以是第三方a
     - includes：找array中是否有某个特定的值，如arr.includes(12)
     - contains：找DOM元素中某节点是否包含某子节点，如parent.contains(child)
 
-拓展：让识别关键词hoop up to某个链接/图片/api
+
 
 
 

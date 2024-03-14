@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+        <button class="btn">click</button>
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+
+  div {
+    width: 100%;
+    padding: 100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background: mistyrose;
+  }
+
+  .three {
+    background: coral;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn{
+    max-width: 80px;
+  }
+</style>
+
+<button></button>
+<script>
+  //todo: 增加一个按钮，点击后只有div two被触发
+
+
+
+//listen to bod, when click, let the default bubbling happen
+
+const divs = document.querySelectorAll('div');
+const buttons = document.querySelector('btn');
+
+function handleClick(e){
+  console.log(this.classList.value);
+}
+
+//注意selectorall返回的时nodelist而不是单个元素，需要遍历！！
+divs.forEach(div=>div.addEventListener('click',handleClick,{
+  once:true, //只触发一次事件
+  capture:true //从外向内
+}));
+
+//let divs bubbling in the opposite direction
+
+//let only div "two" can be triggered
+function handleBtn(e){
+  if(e.classList.contains('.btn')){
+
+  }
+  e.stopPropagation();
+  console.log(this);  
+}
+buttons.addEventListener('click',handleBtn);
+
+//let event only happen once
+</script>
+</body>
+</html>
