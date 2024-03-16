@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>👀👀👀Follow Along Nav</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+    <nav>
+      <ul class="menu">
+        <li><a href="">Home</a></li>
+        <li><a href="">Order Status</a></li>
+        <li><a href="">Tweets</a></li>
+        <li><a href="">Read Our History</a></li>
+        <li><a href="">Contact Us</a></li>
+      </ul>
+    </nav>
+
+    <div class="wrapper">
+      <p>Lorem ipsum dolor sit amet, <a href="">consectetur</a> adipisicing elit. Est <a href="">explicabo</a> unde natus necessitatibus esse obcaecati distinctio, aut itaque, qui vitae!</p>
+      <p>Aspernatur sapiente quae sint <a href="">soluta</a> modi, atque praesentium laborum pariatur earum <a href="">quaerat</a> cupiditate consequuntur facilis ullam dignissimos, aperiam quam veniam.</p>
+      <p>Cum ipsam quod, incidunt sit ex <a href="">tempore</a> placeat maxime <a href="">corrupti</a> possimus <a href="">veritatis</a> ipsum fugit recusandae est doloremque? Hic, <a href="">quibusdam</a>, nulla.</p>
+      <p>Esse quibusdam, ad, ducimus cupiditate <a href="">nulla</a>, quae magni odit <a href="">totam</a> ut consequatur eveniet sunt quam provident sapiente dicta neque quod.</p>
+      <p>Aliquam <a href="">dicta</a> sequi culpa fugiat <a href="">consequuntur</a> pariatur optio ad minima, maxime <a href="">odio</a>, distinctio magni impedit tempore enim repellendus <a href="">repudiandae</a> quas!</p>
+    </div>
+
+  <script>
+    /* 要求：移动鼠标时，页面上的鼠标当前移动到的links<a>会高亮
+       已有：css样式：highlight
+    */
+
+    //1.监听所有的a，触发事件mouseenter时执行（注意allselect返回的是nodelist） 2.创建一个新的由highlight效果的元素newHL放入body全局，可以随着鼠标移动改变定位 3.根据当前鼠标所在地（this）的位置、大小，确定newHL的位置、大小（这一步注意拉动页面改变window.scrollX/Y可能会造成的偏移）
+// style.width和offsetwidth:前者是元素宽度，后者是包括内边距、边框和滚动条的整个元素的可见宽度
+// 怎么在js文件中设置css样式：1.用element.sytle访问该属性 2.用字符串类型来写，比如xx.style.color="blue"或者模板字符串`${this.offsetWidth}px` 3.从js获取的样式尺寸没有单位，不要忘记转为css样式的时候需要写单位px！
+//css的内联样式和外联样式：内联：在html文件中写 外联：在css文件中写再导入html文件 如果是这种用变量动态操作样式必须得内联
+
+//易错点：1.转为css样式的时候``封口不对，或者没有加单位px 2.拼写错误（特别是transform!）
+    const links = document.querySelectorAll('a');
+    const newHL = document.createElement('span');
+    newHL.classList.add('highlight');
+    document.body.appendChild(newHL);
+
+    function handleHL(){
+      const curCoords = {
+        width:`${this.offsetWidth}px`,
+        height:`${this.offsetHeight}px`,
+        transform: `translate(${this.offsetLeft+window.scrollX}px, ${this.offsetTop+window.scrollY}px)`
+      }
+
+      newHL.style.width = curCoords.width;
+      newHL.style.height = curCoords.height;
+      newHL.style.transform = curCoords.transform;
+      console.log(curCoords);
+      
+    }
+    links.forEach(link=>link.addEventListener('mouseenter',handleHL));
+  </script>
+</body>
+</html>
+

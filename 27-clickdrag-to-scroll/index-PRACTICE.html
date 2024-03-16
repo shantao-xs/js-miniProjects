@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Click and Drag</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <div class="items">
+    <div class="item item1">01</div>
+    <div class="item item2">02</div>
+    <div class="item item3">03</div>
+    <div class="item item4">04</div>
+    <div class="item item5">05</div>
+    <div class="item item6">06</div>
+    <div class="item item7">07</div>
+    <div class="item item8">08</div>
+    <div class="item item9">09</div>
+    <div class="item item10">10</div>
+    <div class="item item11">11</div>
+    <div class="item item12">12</div>
+    <div class="item item13">13</div>
+    <div class="item item14">14</div>
+    <div class="item item15">15</div>
+    <div class="item item16">16</div>
+    <div class="item item17">17</div>
+    <div class="item item18">18</div>
+    <div class="item item19">19</div>
+    <div class="item item20">20</div>
+    <div class="item item21">21</div>
+    <div class="item item22">22</div>
+    <div class="item item23">23</div>
+    <div class="item item24">24</div>
+    <div class="item item25">25</div>
+  </div>
+
+<script>
+  //功能：点击slide框后用鼠标可以左右拖动，slide框会有动画效果
+  //1.监听slide框（.items），监听四类mouse event 2.记录初始点下（需判断是否点下）位置，记录拖动距离，换算后赋值给scrollX使其运动到现有位置上
+  const slider = document.querySelector('.items');
+  let isDown = false;
+  let startLoc,curLoc,walk;
+  let scrollLeft;
+  slider.addEventListener('mousedown',(e)=>{
+    //!! 易错：这里的this是被监听事件的元素.items，而不是slider！ e.target则是items里那个被触发的子元素
+    //尽管this已经绑定到了slider上，为了避免混淆，还是直接用已经赋值的变量slider而不是this来访问（这里没懂）
+    //e & e.target：e是指整个mousedown event，e.target是具体的子元素（比如点中了item2），用e可以获取鼠标相对于整个文档的位置（pageXY），用e.target获取鼠标相对于视口的位置尺寸，可以用方法getBoundingClientRect()快速获取，也可以获取鼠标相对视口的位置clientXY
+    //用e还是e.target？看你想要改变和监控的元素到底是整体（items还是当前个体如item2）
+
+    //视口vs窗口：视口是显示网页内容的整个取余，窗口包括地址栏搜索栏等，一般情况下水平维度上，视口和窗口没差，但是碰到缩放、滚动等行为是，明确视口在窗口里的相对位置至关重要，这也是为什么startLoc要这么计算
+
+    //getBoundingClientRect() 返回的是该DOMRect对象所在的矩形的位置和大小信息（在视口中）
+    isDown=true;
+    slider.classList.add('active');
+    startLoc = e.pageX - slider.offsetLeft; //确定鼠标mouse的点在slider中的相对位置，而不是在整个窗口中的位置（这意味着需要-slider对于窗口的相对位置） //为什么不是e.target.offsetLeft？因为要追踪整个元素的偏移量，而不是当前子元素的
+    scrollLeft = slider.scrollLeft; //记录当前卷轴被移动的位置
+  });
+  slider.addEventListener('mousemove',(e)=>{
+    //想要滚动slider（整个items），就对它赋值，而不是对子元素item赋值
+    e.preventDefault();//防止自动刷新
+    if(!isDown) return;
+    const curLoc = e.pageX - slider.offsetLeft;  //拖动后mouse的点在slider中的相对位置
+    walk=(curLoc - startLoc)*2; //拖动前和拖动后的偏移量*公式
+    slider.scrollLeft = scrollLeft-walk;  //根据last卷轴被移动位置和鼠标walk距离，来决定现在要移动多少
+  });
+  slider.addEventListener('mouseup',(e)=>{
+    isDown=false;
+    slider.classList.remove('active');
+  });
+  slider.addEventListener('mouseleave',(e)=>{
+    
+    isDown=false;
+    slider.classList.remove('active');
+});
+</script>
+
+  </body>
+</html>
