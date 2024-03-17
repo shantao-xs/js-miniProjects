@@ -221,58 +221,39 @@
 </style>
 
 <script>
-  const dropdownBackground = document.querySelector('.dropdownBackground');
-  //注意这是nodelist，选择的是cool下的这一级的所有li——为什么不能直接选中.dropdown？
-  const dropdownItems = document.querySelectorAll('.cool > li'); 
-  const navBar = document.querySelector('.top');
+  const triggerItems = document.querySelectorAll('.cool > li');
+  const background = document.querySelector('.dropdownBackground');
+  const nav = document.querySelector('.top');
 
-  //this vs e: this==e.target, e则是mouseenter的事件
-  //注意：在js中增加class不用写'.'，直接写'classname'
   function handleHover(e){
-    //先出现背景框(display:block)，再出现下拉框的文本(opacity=1)：用setTimeout搭配if.contians来展示trigger-enter-active
-    //没懂：把trigger-enter和trigger-enter-active分开来写的原理是什么？
-    this.classList.add('trigger-enter');
-    setTimeout(() => {
-      if(this.classList.contains('trigger-enter'))
-        this.classList.add('trigger-enter-active');
-    },200);
-    
-    //怎么批量赋值？设置css样式的时候注意单位px！
-    const {offsetWidth:width,offsetHeight:height} = e.target;
-    const offsetX =  e.target.offsetLeft +navBar.offsetLeft ;
-    const offsetY =  e.target.offsetTop +navBar.offsetTop;
+    e.target.classList.add('trigger-enter');
+    setTimeout(()=>e.target.classList.contains('trigger-enter') && e.target.classList.add('trigger-enter-active'));
+    background.classList.add('open');
 
-    //不明白为什么这里不用.cool > li的各个item，而是要用dropdown？是因为要定位到li的子元素<div class=dropdown>吗？
-    //注意这里是从this（也就是<li>）进入选择子类元素，而不是document.xxx
+    //明确background的大小，位置
     const dropdown = this.querySelector('.dropdown');
     const dropdownCoords = dropdown.getBoundingClientRect();
-    //确定位置大小
     const coords = {
-      height:dropdownCoords.height,
       width:dropdownCoords.width,
-      X:dropdownCoords.left - navBar.offsetLeft,
-      Y:dropdownCoords.top - navBar.offsetTop
+      height:dropdownCoords.height,
+      X:dropdownCoords.left - nav.offsetLeft,
+      Y:dropdownCoords.top-nav.offsetTop
     }
-    //将位置大小赋给下拉框的背景框
-    dropdownBackground.style.width=`${coords.width}px`;
-    dropdownBackground.style.height=`${coords.height}px`;
-    dropdownBackground.style.transform=`translate(${coords.X}px,${coords.Y}px)`
-    //让下拉框的背景框得以显示 opacity=1
-    dropdownBackground.classList.add('open');
+
+    background.style.width = `${coords.width}px`;
+    background.style.height = `${coords.height}px`;
+    background.style.transform = `translate(${coords.X}px,${coords.Y}px)`;
 
   }
-  //接下来要增加背景框，设置settimeout
 
   function handleLeave(e){
-    this.classList.remove('trigger-enter');
-    this.classList.remove('trigger-enter-active');
+    e.target.classList.remove('trigger-enter');
+    e.target.classList.remove('trigger-enter-active');
+    background.classList.remove('open');
   }
 
-
-  //注意不仅要监听鼠标移入，也要监听移出  
-  dropdownItems.forEach(item=>item.addEventListener('mouseenter',handleHover));
-  dropdownItems.forEach(item=>item.addEventListener('mouseleave',handleLeave));
-
+  triggerItems.forEach(item=>item.addEventListener('mouseenter',handleHover));
+  triggerItems.forEach(item=>item.addEventListener('mouseleave',handleLeave));
 </script>
 
 </body>
