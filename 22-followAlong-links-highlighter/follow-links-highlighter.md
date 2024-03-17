@@ -8,6 +8,9 @@
     - mouseenter evnet: 鼠标首次移动到**时
     - !注意allselect返回的是nodelist，需要遍历每个元素
 2. 创建一个拥有highlight的css样式效果的newHL的元素，把他加到要应用的页面范围里：body.appendChild
+    - document.createElement('span')
+    - document.classList.add('classname')
+    - parentElement.appendChild()
 3. 平移newHL的位置到被监听的<a>元素上
     - 元素位置：top,left
         - 细节：防止页面向下滑动后highlighter位置的偏移 .top 和.left需要+window.scrollY/X
@@ -33,6 +36,7 @@
     - transition：动画相关，让元素的交互更加平滑
     - transform：位移相关，让元素平移(改变xy轴坐标)、旋转、缩放、倾斜等，常用的有translate,rotate,scale,skewd
 
+7. 注意在选择元素的时候，是选中单个元素，还是一组元素？
 
 
 

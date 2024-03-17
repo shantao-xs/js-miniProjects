@@ -1,4 +1,7 @@
 # followAlong-dropdown
+## 联动
+22 follow along links highlighter
+
 ## 功能
 鼠标移动到nav上的nav item时，会出现对应的下拉框dropdown，每个下拉框都有一个背景框（白色或不同颜色）
 
