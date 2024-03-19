@@ -24,64 +24,71 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <div class="buttons">
+      <button class="btn-left" id="clear-all">clear all</button>
+      <button class="btn-right" id="clear-checked">clear checked</button>
+    </div>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items =  JSON.parse(localStorage.getItem('items')) || [];
+  let items = JSON.parse(localStorage.getItem('items')) || [];
 
-
-  //读取input里的值
-  //??? 怎么读取input里的用户输入数据？不能直接选择e.target.value，那样只会返回父元素<form class="add-items">这个对象，应该要选择input[name="item"]的子元素，并读取它的值.value
-  //!!! 从localstorage中存取的时候，不要忘记转化JSON object or string！
-  function handleAdd(e){
+  function handleSubmit(e){
     e.preventDefault();
-    const inputs = document.querySelector('input[name="item"]').value;
-    const inputText = {
-      text: inputs,
-      done: false,
+    const text= addItems.querySelector('[name=item]').value;
+    const newItem = {
+      text:text,
+      done:false
     }
-    items.push(inputText);
-    console.log(items);
-    displayList(items,itemsList);
-    console.log(items);
+    items.push(newItem);
     localStorage.setItem('items',JSON.stringify(items));
-    e.target.reset();
+    displayItems();
+    this.reset();
   }
+  const inputText = addItems.addEventListener('submit',handleSubmit);
 
-  //??? 怎么才能够用html显示出来？必须要把这个显示的return赋值给目标元素（.plates)的innerHTML属性！
-  //??? 怎么写唯一标识符？用id不能直接写index等数字，可以自定义如data-index, data-xxx... ，这样可以反复使用数字${i}
-  //!!! label的for必须要跟input的id对应上！如果不关联，则无法点击切换checkbox状态
-  function displayList(items=[],itemsList){
-    itemsList.innerHTML =  items.map((item,i)=>{
-      return `
+  //!!! 一定要更新innerHTML才会显示！
+  // id和name的区别？（id有唯一性优势，那name存在的意义是？）
+  function displayItems(e){
+    itemsList.innerHTML = items.map((item,i)=>
+      {return`
         <li>
-          <input type="checkbox" id=item${i} data-index=${i} ${item.done==true? 'checked' : ''}/>
-          <label for="item${i}">${item.text}</label>
+          <input type='checkbox' id='item${i}' data-index=${i} ${item.done?'checked':''} />
+          <label for='item${i}'>${item.text}</label>  
         </li>
-      `
-    }).join('');
+      `}
+    ).join('');
   }
 
-  //这里只需要修改对应checkbox的done状态（1.怎么找到对应的box？ 2.怎么只找checkbox而不找其他元素？ 3.怎么toggle该checkbox的状态？）
-  //!!! 不要忘记，只对input元素进行排查，排除其他元素！
-  function handleClick(e){
-    console.log("start:");
-    console.log(e.target);
+  //!!! e.target.matches??
+  function toggleDone(e){
     if(!e.target.matches('input')) return;
-    const index = e.target.dataset.index;
+    const index= e.target.dataset.index;
     items[index].done = !items[index].done;
     localStorage.setItem('items',JSON.stringify(items));
-    displayList(items,itemsList);
+    displayItems();
   }
+  itemsList.addEventListener('click',toggleDone);
 
-  //1.选择响应元素，监听click和submit 2.更新items，用html呈现 3.存入localstorage 4.如果是submit最后需要this.reset()
-  addItems.addEventListener('submit',handleAdd);
-  itemsList.addEventListener('click',handleClick);
+  const clearAll = document.querySelector('#clear-all');
+  function handleClearAll(){
+    items=[];
+    localStorage.setItem('items',JSON.stringify(items));
+    displayItems();
+  }
+  clearAll.addEventListener('click',handleClearAll);
 
-  displayList(items,itemsList);
+  const clearChecked = document.querySelector('#clear-checked');
+  function handleClearChecked(e){
+    items = items.filter(item=> !item.done);
+    localStorage.setItem('items',JSON.stringify(items));
+    displayItems();
+  }
+  clearChecked.addEventListener('click',handleClearChecked);
 
+  displayItems();
 
 </script>
 

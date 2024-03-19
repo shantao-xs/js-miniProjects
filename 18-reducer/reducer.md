@@ -11,9 +11,9 @@
 
 ## 知识点
 1. 选择器
-    - 选择属性：`'[attribute name]'`
-    - 选择类：`'.classname'`
-    - 选择id：`'.#idname'`
+    - 选择属性：`'[attributeName]'`
+    - 选择类：`'.className'`
+    - 选择id：`'#idName'`
 
 2. 数据类型转换
 - nodelist转为array：`Array.from(xxx)`

@@ -62,3 +62,8 @@ form主要用来做什么？处理用户input的数据，常用的表单元素�
 //怎么找到input type=submit里用户输入的文本值？【错了两遍！】先定位到该子元素input[name='item']，再去读取它的.value
 //怎么找到目标checkbox的对应的label再items中的文本？【错了两遍！】用到data-index这个属性定位它在items数组中的位置
 //怎么检查当前元素是不是input元素？ e.target.matches('input')
+
+//出错0319
+e.target.matches 用来检查元素
+html的显示： //!!! 一定要更新innerHTML才会显示！
+  // id和name的区别？（id有唯一性优势，那name存在的意义是？）
