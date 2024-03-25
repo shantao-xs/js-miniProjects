@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Click and Drag</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <div class="items">
+    <div class="item item1">01</div>
+    <div class="item item2">02</div>
+    <div class="item item3">03</div>
+    <div class="item item4">04</div>
+    <div class="item item5">05</div>
+    <div class="item item6">06</div>
+    <div class="item item7">07</div>
+    <div class="item item8">08</div>
+    <div class="item item9">09</div>
+    <div class="item item10">10</div>
+    <div class="item item11">11</div>
+    <div class="item item12">12</div>
+    <div class="item item13">13</div>
+    <div class="item item14">14</div>
+    <div class="item item15">15</div>
+    <div class="item item16">16</div>
+    <div class="item item17">17</div>
+    <div class="item item18">18</div>
+    <div class="item item19">19</div>
+    <div class="item item20">20</div>
+    <div class="item item21">21</div>
+    <div class="item item22">22</div>
+    <div class="item item23">23</div>
+    <div class="item item24">24</div>
+    <div class="item item25">25</div>
+  </div>
+
+<script>
+  const slides = document.querySelector('.items');
+  let prevX,curX;
+  let prevSlideLeft;
+  let isDown = false;
+
+//注意什么是针对于viewport的位置，什么是针对于父元素的位置：要记录mousedown时的位置，对象应该是e(mousedown的event)而不是e.target
+//注意每次prev都要把slides的位置放在当前的slides.scrollLeft上！
+  function handleDown(e){
+    slides.classList.add('active');
+    isDown=true;
+    prevX = e.pageX - slides.offsetLeft;
+    prevSlideLeft = slides.scrollLeft;
+  }
+
+  function handleMove(e){
+    //!! 记得过滤不点击只移动的情况！用isDown逻辑
+    //!! 拖拽页面时，要考虑preventDefault。此外还有提交表单，点击url等情况
+    e.preventDefault();
+    if(!isDown) return;
+    curX = e.pageX - slides.offsetLeft;
+    const walk = (curX - prevX)*2;
+    slides.scrollLeft = prevSlideLeft - walk;
+  }
+
+
+
+  function handleUp(e){
+    slides.classList.remove('active');
+    isDown=false;
+  }
+
+  function handleLeave(e){
+    slides.classList.remove('active');
+    isDown=false;
+  }
+
+
+
+
+  slides.addEventListener('mousemove',handleMove);
+  slides.addEventListener('mousedown',handleDown);
+  slides.addEventListener('mouseup',handleUp);
+  slides.addEventListener('mouseleave',handleLeave);
+</script>
+
+  </body>
+</html>

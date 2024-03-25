@@ -56,6 +56,13 @@ coords={
 1. querySelectAll()的时候，返回的是nodelist而不是单个的object
 2. class的格式：以class选择元素，需要'.classname'，为元素增加class属性时，则不需要'.'，只需要add('classname')
 
+//0319
+- 为什么这里要给nav item而不是nav item下的下拉框施加trigger-enter呢，是因为css样式里设定'.trigger-enter .dropdown'是一个父子关系的样式，要求'trigger-enter'的元素是'dropdown'元素的parent element（不太确定）
+    this.classList.add('trigger-enter');
+    setTimeout(() => (this.classList.contains('trigger-enter') ) && this.classList.add('trigger-enter-active'),150);  
+- 注意，这里需要捕捉下拉框的位置和大小，而不是整个li的，因为li还包括了"about me"的部分
+
+
 ## 问题
 1. 为什么这样就可以先显示背景框再显示文本？
 ```javascript

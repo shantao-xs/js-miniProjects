@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Click and Drag</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <div class="items">
+    <div class="item item1">01</div>
+    <div class="item item2">02</div>
+    <div class="item item3">03</div>
+    <div class="item item4">04</div>
+    <div class="item item5">05</div>
+    <div class="item item6">06</div>
+    <div class="item item7">07</div>
+    <div class="item item8">08</div>
+    <div class="item item9">09</div>
+    <div class="item item10">10</div>
+    <div class="item item11">11</div>
+    <div class="item item12">12</div>
+    <div class="item item13">13</div>
+    <div class="item item14">14</div>
+    <div class="item item15">15</div>
+    <div class="item item16">16</div>
+    <div class="item item17">17</div>
+    <div class="item item18">18</div>
+    <div class="item item19">19</div>
+    <div class="item item20">20</div>
+    <div class="item item21">21</div>
+    <div class="item item22">22</div>
+    <div class="item item23">23</div>
+    <div class="item item24">24</div>
+    <div class="item item25">25</div>
+  </div>
+
+<script>
+//目标：鼠标拖拽slide框里的图片，可以左右移动
+//1.mouseevent，确保点击鼠标后才能拖拽 2.记录拖拽距离（点击鼠标的位置，移动的位置），给slide施加一个拖拽的距离 3.注意slide框和viewport的整体位置关系 4.注意新的样式效果
+//知识点：scrollLeft,pageX,offsetLeft,各种mouseevent和判别他们的方法(isDown)
+
+const slides = document.querySelector('.items');
+let lastClick;
+let slideScroll;
+
+function handleDown(e){
+  this.classList.add('active');
+  //当前鼠标位置：相对整个页面pageX，当前鼠标相对slides的位置：pageX-slide在页面中的位置
+  lastClick = e.pageX-slides.offsetLeft;
+  slideScroll = slides.scrollLeft;
+}
+
+function handleUp(){
+  this.classList.remove('active');
+}
+
+function handleMove(e){
+  if(!this.classList.contains('active')) return;
+  const curClick = e.pageX-slides.offsetLeft;
+  const walk = (curClick-lastClick)*1.5;
+  slides.scrollLeft = slideScroll - walk;
+}
+
+function handleLeave(){
+  this.classList.remove('active');
+}
+
+slides.addEventListener('mousedown',handleDown);
+slides.addEventListener('mouseup',handleUp);
+slides.addEventListener('mousemove',handleMove);
+slides.addEventListener('mouseleave',handleLeave);
+
+</script>
+
+</body>
+</html>
